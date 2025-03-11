@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-
+        "time"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
@@ -28,6 +28,7 @@ func main() {
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Printf("warning: assuming default configuration. .env unreadable: %v", err)
+
 	}
 
 	port := os.Getenv("PORT")
@@ -91,6 +92,8 @@ func main() {
 	srv := &http.Server{
 		Addr:    ":" + port,
 		Handler: router,
+		ReadTimeout: 10 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
 
 	log.Printf("Serving on port: %s\n", port)
